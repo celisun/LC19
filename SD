@@ -1,0 +1,50 @@
+load balancer
+
+- prevent going to unhealty server
+- prevent overloeading resources
+- help eliminate single points of failure
+
+route traffic based on random, round robin, weighted round robin, least loaded, etc.
+layer 4 load balancing, look at transport layer header (source, dest IP, port number) not contents
+
+help with horizontal scaling, cost efficient and higher availability then vertical scaling
+such as to scaling a single server on more expensive hardware.
+drawback is introduces complexity and cloning, downstream servers such as caches and DB need to handle
+more simultaneous connections as upstream services scale out
+
+Downside of load balancer:
+- performance bottleneck if configure not properly
+- increase complexity for eliminate single point of failure
+- single LB is a single point of failure, configuring multiple introduces complexity
+
+relational database Relational-DB
+
+scaling technique: master-master replication, master-slave replication
+master-slave: master serves read and writes for client, replicating writes to one/more slaves (can be like tree-like fashion).
+If master goes offline, system can still operate in read-only mode until master is provisioned or a slave
+is promoted
+
+NoSQL, collection of data items key-value store, document store
+
+
+Caching
+
+* client cache:
+caches can be located on the client side, server side, or a distinct cache layer
+
+* web server caching:
+Web servers can also cache requests, responses, get without having to contact
+application servers.
+
+* database caching
+* application caching:
+In-memory caches such as memcached, redis are key-value stores between
+your application and data storage. data is held in RAM, much faster than typical DB in disk.
+usually use LRU in invalidate cold entries and keep hot data.
+
+memcached: look for entry in cache, if cache-miss, load entry from db, add entry to cache (update), return entry
+drawback is cache-asdie (lazy loading)
+- each cache miss is three trips, delay
+- data stale if it's updated in the database. set TTL, force an update of cache entry, or using write-through
+- when a node fails, replaced by new node, latency
+
